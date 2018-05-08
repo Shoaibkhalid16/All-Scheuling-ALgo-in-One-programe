@@ -393,6 +393,54 @@ def VRR():
         print(process[i], "     ", arrival[i], "      ", burst[i])
     print('Quantum time is: ', qt)
     print('Input Output Time is',io)
+    turn = [0] * size
+    wt = [0] * size
+    rt = [0] * size
+    waitingtime=[0]*size
+    turntime=[0]*size
+    for i in range(size):
+        rt[i]=burst[i]
+    time=0
+    while True:
+        done=True
+        for i in range(size):
+            if rt[i]>0:
+                done=False
+                if rt[i]>qt:
+                    time+=qt
+                    rt[i]-=qt
+                else:
+                    time=time+rt[i]
+                    wt[i]=time-burst[i]
+                    rt[i]=0
+            if wt[i]==io:
+                wt[i]+=io
+        if done==True:
+            break
+
+    for i in range (size):
+        turn[i]=burst[i]+wt[i]
+
+    for j in range(size):
+        turntime[j]=turn[j]-arrival[j]
+        waitingtime[j]=turn[j]-arrival[j]-burst[j]
+
+    sum1=0
+    sum2=0
+
+    for k in range(size):
+        sum1+=waitingtime[k]
+        sum2+=turntime[k]
+    awt=sum1/size
+    atat=sum2/size
+
+    for j in range(size):
+        first1 = min(burst)
+        runn = burst.index(first1)
+        print(process[j], 'arrival time is', arrival[j], 'and ends at ', turn[j])
+
+    print('average waiting time is',awt)
+    print('average turn around time is',atat)
 
 
 print('1) First come first serve')
